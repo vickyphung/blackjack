@@ -13,7 +13,214 @@
 <body>
 
 
-
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./bjstyles.css">
+        <title>Blackjack</title>
+    </head>
+    <body>
+        <div id="scoreboard">
+                <h2 id="winner"></h2>
+            
+        </div>
+        <h2 id="winner"></h2>
+        <div id="game">
+            <button id="shuffle" onclick="shuffle()">Shuffle</button>
+            <!-- <button id="play" class="hidden" onclick="play()">Play</button> -->
+            <div>
+                <button id="new-game" class="hidden" onclick="newGame()">Deal Cards</button>
+                <button id="draw-card" class="hidden" onclick="drawCard()">Hit</button>
+                <button id="stay" class = "hidden" onclick="evaluateWinner()">Stay</button>
+            </div>
+        </div>
+        
+        <div>
+            PLAYER
+            <h2 id="player-display"></h2>
+            <div id="player-hand"></div>
+        </div>
+    
+        <div>
+            DEALER
+            <h2 id="dealer-display"></h2>
+            <div id="dealer-hand"></div>
+        </div>
+    
+        <script>
+    
+            const shuffleBtn = document.getElementById("shuffle")
+            const playBtn = document.getElementById("play")
+            const hitBtn = document.getElementById("draw-card")
+            const stayBtn = document.getElementById("stay")
+            const newBtn = document.getElementById("new-game")
+    
+            const playerHand = document.getElementById("player-hand")
+            const dealerHand = document.getElementById("dealer-hand")
+    
+            const playerDisplay = document.getElementById("player-display")
+            const dealerDisplay = document.getElementById("dealer-display")
+            const winnerDisplay = document.getElementById("winner");
+    
+            let deckId;
+            let playerScore = 0;
+            let dealerScore = 0;
+    
+    
+            shuffle()
+    
+            function newGame(){
+                while(playerHand.firstChild){
+                    playerHand.removeChild(playerHand.firstChild)
+                }
+                while(dealerHand.firstChild){
+                    dealerHand.removeChild(dealerHand.firstChild)
+                }
+                dealerScore = 0
+                playerScore = 0
+                winnerDisplay.textContent = ""
+                shuffle()
+                play()
+            }
+            function shuffle(){
+                fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+                .then(response => response.json())
+                .then(data => {
+                    deckId= data.deck_id
+                    shuffleBtn.classList.toggle("hidden")
+                    playBtn.classList.toggle("hidden")
+                })
+                .catch(err => console.log(err))
+            }
+    
+            function dealerDraw(){
+                fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+                .then(response => response.json())
+                .then(data => {
+                    let card = data.cards[0]
+                    let image = document.createElement("img")
+                    image.src = card.image
+                    image.alt = card.code
+                    dealerHand.appendChild(image)
+                    addToScore(card.value, "dealer")
+                    evaluateWinner()
+                })
+                .catch(err => console.log(err))
+            }
+    
+            function addToScore(score, player){
+               let value;
+               if(score === "JACK" || score === "QUEEN" || score === "KING"){
+                   value = 10
+               } else if (score === "ACE"){
+                   value = 1
+               } else {
+                   value = Number(score)
+               }
+    
+               if(player === "player"){
+                   playerScore += value
+                   playerDisplay.textContent = playerScore
+               } else {
+                   dealerScore += value
+                   dealerDisplay.textContent = "?"
+               }
+            }
+            function play(){
+                fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
+                .then(response => response.json())
+                .then(data => {
+                    let cards = data.cards
+                    for(let i = 0; i < cards.length; i++){
+                        console.log(cards[i])
+                        let image = document.createElement("img")
+                        image.src = cards[i].image
+                        image.alt = cards[i].code
+                        if(i < 2){
+                            playerHand.appendChild(image)
+                            addToScore(cards[i].value, "player")
+                        }
+                        else {
+                            dealerHand.appendChild(image)
+                            addToScore(cards[i].value, "dealer")
+                        }   
+                    }
+                        playBtn.classList.toggle("hidden")
+                        hitBtn.classList.toggle("hidden")
+                        stayBtn.classList.toggle("hidden")
+                })
+                .catch(err => console.log(err))
+            }
+            
+            function evaluateWinner(){
+                if(dealerScore < 17){
+                    dealerDraw()
+                }
+                else {
+                    let winner;
+                    if(playerScore === dealerScore){
+                        winner = "NO ONE"
+                    } else if(playerScore === 21 || dealerScore > 21 ||playerScore > dealerScore){
+                        winner = "PLAYER"
+                    } else {
+                        winner = "DEALER"
+                    }
+    
+                    displayWinner(winner)
+                }   
+            }
+    
+            function displayWinner(winner){
+                winnerDisplay.textContent = `${winner} WINS!`
+                dealerDisplay.textContent = dealerScore
+                hitBtn.classList.toggle("hidden")
+                stayBtn.classList.toggle("hidden")
+                newBtn.classList.toggle("hidden")
+            }
+            
+            function checkTotal(){
+                if(playerScore > 21){
+                    displayWinner("DEALER")
+                }
+            }
+            
+            function drawCard(){
+                fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
+                .then(response => response.json())
+                .then(data => {
+                    let card = data.cards[0]
+                    let image = document.createElement("img")
+                    image.src = card.image
+                    image.alt = card.code
+                    playerHand.appendChild(image)
+                    addToScore(card.value, "player")
+                    checkTotal()
+                })
+                .catch(err => console.log(err))
+            }
+        </script>
+    </body>
+    </html>
+    
+    <!-- www.example.com -->
+    <!-- lodogion: "/" -->
+    
+    
+    <!--
+    Ace = 1 / 11; Blackjack!!!!
+    
+    Hide Second Dealer card, until player is done acting.
+    MONIES.
+    
+    
+    
+     -->
+    
+    
+    
 
 
 
