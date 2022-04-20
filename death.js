@@ -13,17 +13,17 @@ const dealerHand = document.getElementById("dealer-hand")
 
 const playScoreDisplay = document.getElementById("player-score")
 const dealerScoreDisplay = document.getElementById("dealer-score")
-const messageDisplay = document.getElementById("message");
+const messageDisplay = document.getElementById("msgbox");
 
 
 let playerScore = 0;
 let dealerScore = 0;
 
-let playhand = new Array();
-let dealhand = new Array();
+
 
 let hidden;
 let deck;
+
 
 
 window.onload = function() {
@@ -59,53 +59,76 @@ function shuffleDeck() {
 }
 
 
-//DEAL CARDS
-//DEAL CARDS TO DEALER
-function startGame() {
-      for (let i = 0; i < 2; i++) {
-        let cardImg = document.createElement("img");
-        let card = deck.pop();
 
-        
-        cardImg.src = "./cards/" + card + ".png";
-        dealerScore += getValue(card);
-        // yourAceCount += checkAce(card);
-        document.getElementById("dealer-hand").append(cardImg);
+
+
+function getValue(card) {
+    let data = card.split("-"); 
+    let value = data[0];
+
+//Assigns face cards at value 10.
+    if (isNaN(value)) { 
+        if(value == "J" || value == "Q" || value === "K"){
+        return 10;
+        }
+    } 
+
+//Evaluates whether Ace is 1 or 11
+    let ds = dealerScore + 11;
+    let ps = playerScore + 11;
+
+    if (isNaN(value)) { 
+        if (value == "A"&&(ps<22)&&(ps>16)) { 
+                    return 11;
+        }
+        if (value == "A"&&(ds<22)&&(ds>16)) { 
+            return 11;
+        }
+        return 1; 
     }
+    return parseInt(value);
+}
 
 
-    console.log("Dealers hidden Card and Dealer Score");
+
+//DEAL CARDS
+function startGame() {
+
+//Deals a hidden card to the dealer.
+    hidden = deck.pop();
+    dealerScore += getValue(hidden);
+    // dealerAceCount += checkAce(hidden);
+
+    console.log("Checking Dealer Hidden Card and Dealer Score")
     console.log(hidden);
     console.log(dealerScore);
-    dealerScoreDisplay.textContent = ` DEALER ${dealerScore}`
-
-    
-    // hidden = deck.pop();
-    // dealerSum += getValue(hidden);
-    // dealerAceCount += checkAce(hidden);
-    // // console.log(hidden);
-    // // console.log(dealerSum);
-    // while (dealerSum < 17) {
-    //     //<img src="./cards/4-C.png">
-    //     let cardImg = document.createElement("img");
-    //     let card = deck.pop();
-    //     cardImg.src = "./cards/" + card + ".png";
-    //     dealerSum += getValue(card);
-    //     dealerAceCount += checkAce(card);
-    //     document.getElementById("dealer-cards").append(cardImg);
+  
+//Deals a second card to the dealer hand.
+// while (dealerScore < 17) {
+      for (let i = 0; i < 1; i++) {
+        let cardImg = document.createElement("img");
+        let card = deck.pop();
+        cardImg.src = "./cards/" + card + ".png";
+        dealerScore += getValue(card);
+        // dealerAceCount += checkAce(card);
+        document.getElementById("dealer-hand").append(cardImg);
+}
+        console.log(dealerScore);
     // }
-    // console.log(dealerSum);
 
-    
-    //PLAYER START CARDS
+    dealerScoreDisplay.textContent = ` DEALER ?`
+
+//Deals 2 cards to the player.
     for (let i = 0; i < 2; i++) {
         let cardImg = document.createElement("img");
         let card = deck.pop();
-
         cardImg.src = "./cards/" + card + ".png";
         playerScore += getValue(card);
         // yourAceCount += checkAce(card);
         document.getElementById("player-hand").append(cardImg);
+
+        console.log("Player Cards")
+        console.log(card)
     }
 
     console.log("Player Hand Should Append, PlayerScore Update")
@@ -120,79 +143,100 @@ function startGame() {
 
 
 
-function getValue(card) {
-    let data = card.split("-"); // "4-C" -> ["4", "C"]
-    let value = data[0];
 
-    if (isNaN(value)) { //A J Q K
-        if (value == "A") {
-            return 11;
-        }
-        return 10;
+
+
+function hit() {
+    // if (!drawCard) {
+    //     return;
+    // }
+
+    let cardImg = document.createElement("img");
+    let card = deck.pop();
+    cardImg.src = "./cards/" + card + ".png";
+    
+    playerScore+= getValue(card);
+
+    document.getElementById("player-hand").append(cardImg);
+    
+
+    // if (playerScore >21){
+    //     drawCard = false;
+    // }
+    
+    
+    console.log("Player got a hit card, Score update")
+    console.log(playerScore)
+    playScoreDisplay.textContent = `PLAYER ${playerScore}`
+}
+
+
+function stay() {
+
+
+    canHit = false;
+    document.getElementById("hidden").src = "./cards/" + hidden + ".png";
+
+    let message = "";
+    if (playerScore > 21) {
+        message = "Busted! :(";
     }
-    return parseInt(value);
+    else if (dealerScore > 21) {
+        message = " Dealer Busts. You win! :D";
+    }
+    //both you and dealer <= 21
+    else if (playerScore == dealerScore) {
+        message = "Tie!";
+    }
+    else if (playerScore > dealerScore) {
+        message = "You Win! YAY!";
+    }
+    else if (playerScore < dealerScore) {
+        message = "You Lose! :(";
+    }
+
+
+    // document.getElementById("dealer-sum").innerText = dealerSum;
+    // document.getElementById("your-sum").innerText = yourSum;
+    // document.getElementById("msgbox").innerText = message;
+
+    playScoreDisplay.textContent = `PLAYER ${playerScore}`
+    dealerScoreDisplay.textContent = `DEALER ${dealerScore}`
+    messageDisplay.textContent = message;
+
+    console.log(message)
+
+
+    while (dealerScore < 17) {
+        //   for (let i = 0; i < 1; i++) {
+            let cardImg = document.createElement("img");
+            let card = deck.pop();
+            cardImg.src = "./cards/" + card + ".png";
+            dealerScore += getValue(card);
+            // dealerAceCount += checkAce(card);
+            document.getElementById("dealer-hand").append(cardImg);
+    }
+
+
 }
 
 
 
 
-// function renderDeck()
-// {
-// 	document.getElementById('deck').innerHTML = '';
 
-// 	for(let i = 0; i < deck.length; i++)
-// 	{
-// 		let card = document.createElement("div");
-// 		let icon = '';
-// 		if (deck[i].Suit == 'hearts')
-// 		icon='&hearts;';
-// 		else if (deck[i].Suit == 'spades')
-// 		icon = '&spades;';
-// 		else if (deck[i].Suit == 'diamonds')
-// 		icon = '&diams;';
-// 		else
-// 		icon = '&clubs;';
 
-// 		card.innerHTML = deck[i].Value + '' + icon;
-// 		card.classList.add('card');
-// 		card.classList.add(deck[i].Suit);
-// 		document.getElementById("deck").appendChild(card);
-// 	}
+
+
+// function checkAce(card) {
+//     if (card[0] == "A") {
+//         return 1;
+//     }
+//     return 0;
 // }
 
-
-
-// function getDeck() {
-// 	let deck = new Array();
-
-// 	for(let i = 0; i < suits.length; i++) {
-// 		for(let x = 0; x < cards.length; x++) {
-// 			let card = {Value: cards[x], Suit: suits[i]};
-// 			deck.push(card);
-// 		}
-// 	}
-// 	return deck;
-// }
-
-// function shuffle(){
-// 	for (let i = 0; i < 1000; i++)
-// 	{
-// 		let location1 = Math.floor((Math.random() * deck.length));
-// 		let location2 = Math.floor((Math.random() * deck.length));
-// 		let tmp = deck[location1];
-
-// 		deck[location1] = deck[location2];
-// 		deck[location2] = tmp;
-// 	}
-
-// 	renderDeck();
-// }
-
-
-
-
-
-
-
-
-
+// function reduceAce(playerScore, playerAceCount) {
+//     while (playerScore > 21 && playerAceCount > 0) {
+//         playerScore -= 10;
+//         playerAceCount -= 1;
+//     }
+//     return playerScore;

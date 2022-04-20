@@ -30,8 +30,8 @@ giveCard( PLAYER );
 giveCard( DEALER );
 giveCard( PLAYER );
 giveCard( DEALER );
-dealer21 = ((cardValue[1] + cardValue[3]) == 21);
-player21 = ((cardValue[0] + cardValue[2]) == 21);
+dealer21 = ((cardValue[1] + cardValue[3])
+player21 = ((cardValue[0] + cardValue[2])
 
 
 
