@@ -1,0 +1,11 @@
+#player-hand img {
+    height: 175px;
+    width: 125px;
+    margin: 1px;
+}
+
+#dealer-hand img {
+    height: 175px;
+    width: 125px;
+    margin: 1px;
+}
