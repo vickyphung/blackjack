@@ -1,248 +1,302 @@
-    
-const shuffleBtn = document.getElementById("shuffle")
-const playBtn = document.getElementById("play")
-const hitBtn = document.getElementById("draw-card")
-const stayBtn = document.getElementById("stay")
-const newBtn = document.getElementById("new-game")
 
+// BLACKJACK? end Game
+// Deal new cards: keep bank score || Clear out old cards and reset score.
+//toggle, display none, class hide
+// Surrender
+// Insurance
+// Double Down
+// Split
+
+const shuffleBtn = document.getElementById("shuffle")
+const hitBtn = document.getElementById("hitCard")
+const stayBtn = document.getElementById("stay")
+const dealBtn = document.getElementById("dealCards")
 const playerHand = document.getElementById("player-hand")
 const dealerHand = document.getElementById("dealer-hand")
+const playScoreDisplay = document.getElementById("player-score")
+const dealerScoreDisplay = document.getElementById("dealer-score")
+const messageDisplay = document.getElementById("msgbox");
+const betTen = document.getElementById("ten")
+const betTwenty = document.getElementById("twenty")
+const betFifty = document.getElementById("fifty")
+const monies = document.getElementById("bank-roll")
+const betTotal = document.getElementById("totalBet")
 
-const playerDisplay = document.getElementById("player-display")
-const dealerDisplay = document.getElementById("dealer-display")
-const winnerDisplay = document.getElementById("winner");
 
-let deckId;
 let playerScore = 0;
 let dealerScore = 0;
+let bet = 0;
+let bank = 1000;
+
+let hidden;
+let deck;
+let drawCard = true;
+
+window.onload = function() {
+    buildDeck();
+    shuffleDeck();
+    startGame();
+}
+
+function buildDeck() {
+    let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    let suits = ["C", "D", "H", "S"];
+    deck = [];
+    for (let i = 0; i < suits.length; i++) {
+        for (let j = 0; j < values.length; j++) {
+            deck.push(values[j] + "-" + suits[i]); 
+        }
+    }
+    console.log("created deck");
+    console.log(deck);
+}
+
+function shuffleDeck() {
+    for (let i = 0; i < deck.length; i++) {
+        let j = Math.floor(Math.random() * deck.length);
+        let temp = deck[i];
+        deck[i] = deck[j];
+        deck[j] = temp;
+    }
+    console.log("shuffled deck");
+    console.log(deck);
+}
+
+function getValue(card) {
+    let data = card.split("-"); 
+    let value = data[0];
+
+//Assigns face cards at value 10.
+    if (isNaN(value)) { 
+        if(value == "J" || value == "Q" || value === "K"){
+        return 10;
+        }
+    } 
+//Boolean to check ace.
+    if (isNaN(value)) { 
+        if(value == "A") {
+            hasAce = true;
+            console.log("HAS AN ACE")
+        } 
+    }
+//Evaluates whether Ace is 1 or 11.
+    let ds = dealerScore + 11;
+    let ps = playerScore + 11;
+
+    if (isNaN(value)) { 
+        if (value == "A"&&(ps<22)&&(ps>16)) { 
+                    return 11;
+        }
+        if (value == "A"&&(ds<22)&&(ds>16)) { 
+            return 11;
+        }
+        return 1; 
+    }
+    return parseInt(value);
+}
+
+//To clear cards from finished round.
+
+//DEAL CARDS
+function startGame() {
+
+//Deals a hidden card to the dealer.
+    hidden = deck.pop();
+
+    dealerScore += getValue(hidden);
+    // dealerAceCount += checkAce(hidden);
+
+    console.log("Dealer Hidden Card " + hidden + "  Dealer Score  " + dealerScore)  
+
+//Deals a second card to the dealer hand.
+    for (let i = 0; i < 1; i++) {
+        let cardImg = document.createElement("img");
+        let card = deck.pop();
+        cardImg.src = "./cards/" + card + ".png";
+        dealerScore += getValue(card);
+        // dealerAceCount += checkAce(card);
+        document.getElementById("dealer-hand").append(cardImg);
+    }
+    console.log(dealerScore);
+    dealerScoreDisplay.textContent = ` DEALER: ?`
+
+//Deals two cards to the player. Appends card images to div, which appends to the player hand. 
+    for (let i = 0; i < 2; i++) {
+        
+        let cardImg = document.createElement("img");
+        let card = deck.pop();
+      
+        let div = document.createElement("div");
+        cardImg.src = "./cards/" + card + ".png";
+        div.append(cardImg)
+        div.classList.add("pCards");
+        // playerScore += getValue(card);
+        // yourAceCount += checkAce(card);
+        document.getElementById("player-hand").appendChild(div);
+    
+        console.log("Player Card Dealt  " + card)
+        playerScore += getValue(card);
+        console.log("Player Score Update  " + playerScore)
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+    }
+    
+}
+
+//PLAYER HIT CARD.
+function hit() {
+    if (!drawCard) {
+        return;
+    }
+    for (let i = 0; i < 1; i++) {
+        let cardImg = document.createElement("img");
+        let card = deck.pop();
+        cardImg.src = "./cards/" + card + ".png";
+        playerScore += getValue(card);
+        // yourAceCount += checkAce(card);
+        document.getElementById("player-hand").append(cardImg);
+    
+        console.log("Player Cards")
+        console.log(card)
+    }
+//If Player goes over 21 while hitting.
+    if (playerScore > 21) {
+        drawCard = false;
+        messageDisplay.textContent = "Oh No, Busted ㋛ You Lose.";
+//If player busts, reveal dealer card and dealer score.
+        document.getElementById("hidden").src = "./cards/" + hidden + ".png";
+        dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
+
+        bank -= bet;
+        message = `You lost ${bet}.`
+        console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
+
+        monies.textContent = `You have $${bank}`
+        bet = 0;
+
+        betTotal.textContent = `Your current bet is ${bet}`
 
 
-shuffle()
+    }
 
-function newGame(){
+    console.log("Player Hand Should Append, PlayerScore Update")
+    console.log(playerScore);
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+}
+
+//Stand function, essentially evaluates score and ends game.
+function stay() {
+    drawCard = false;
+    document.getElementById("hidden").src = "./cards/" + hidden + ".png";
+
+    while (dealerScore < 17) {
+        //   for (let i = 0; i < 1; i++) {
+            let cardImg = document.createElement("img");
+            let card = deck.pop();
+            cardImg.src = "./cards/" + card + ".png";
+            dealerScore += getValue(card);
+            // dealerAceCount += checkAce(card);
+            document.getElementById("dealer-hand").append(cardImg);
+    }
+
+
+    let message = "";
+    if (playerScore > 21) {
+        message = "Busted! :(";
+        bank -= bet;
+        message = `You lost ㋛.`
+        console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
+
+    }
+    if (dealerScore > 21) {
+ 
+        message = `😃 Dealer Busts. You Win! YAY! 💰💰`;
+
+        bank += bet;
+        monies.textContent = `You have $${bank}`
+        console.log(`You win ${bet}. Have $${bank}.`)
+
+    }
+    else if (playerScore == dealerScore) {
+        message = "Tie!";
+    }
+    else if (playerScore > dealerScore) {
+        message = `😃 You Win! YAY! 💰💰`;
+
+        bank += bet;
+        monies.textContent = `You have $${bank}`
+        console.log(`You win ${bet}. Have $${bank}.`)
+
+    }
+    else if (playerScore < dealerScore) {
+        message = "You Lose! ㋛";
+
+        bank -= bet;
+        monies.textContent = `You have $${bank}`
+        console.log(`Lost ${bet}. Have $${bank} left.`)
+    }
+
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+    dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
+    messageDisplay.textContent = message;
+    console.log(message)
+
+    monies.textContent = `You have $${bank}`
+    bet = 0;
+    betTotal.textContent = `Your current bet is ${bet}`
+}
+
+function addTen(){
+    bet += 10;
+    console.log("You added $10 to you bet.")
+    console.log(bet)
+    betTotal.textContent = `Your current bet is ${bet}`
+}
+function addTwenty(){
+    bet += 20;
+    console.log("You added $20 to you bet.")
+    console.log(bet)
+    betTotal.textContent = `Your current bet is ${bet}`
+}
+function addFifty(){
+    bet += 50;
+    console.log("You added $50 to you bet.")
+    betTotal.textContent = `Your current bet is ${bet}`
+}
+
+monies.textContent = `You have $${bank}`
+betTotal.textContent = `Your current bet is ${bet}`
+
+
+
+function removeCard(){
+
+    playerScore = 0;
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+    dealerScore = 0;
+    dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
+    messageDisplay.textContent="";
+
+
     while(playerHand.firstChild){
         playerHand.removeChild(playerHand.firstChild)
-    }
+        }
+
     while(dealerHand.firstChild){
         dealerHand.removeChild(dealerHand.firstChild)
-    }
-    dealerScore = 0
-    playerScore = 0
-    winnerDisplay.textContent = ""
-    shuffle()
-    play()
-}
-function shuffle(){
-    fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
-    .then(response => response.json())
-    .then(data => {
-        deckId= data.deck_id
-        shuffleBtn.classList.toggle("hidden")
-        // playBtn.classList.toggle("hidden")
-    })
-    .catch(err => console.log(err))
-}
-
-
-function addToScore(score, player){
-    let value;
-    if(score === "JACK" || score === "QUEEN" || score === "KING"){
-        value = 10
-    } 
-    else if (score === "ACE"){
-        hasAce = true;
-        value = 1;
-
-
-        if (playerScore + 10 < 22){
-            if(playerScore + 10 > 16){
-                if (score === "ACE"){
-                value = 11;            
-                }
-            }                         
         }
 
-        if (dealerScore + 10 < 22){
-            if(dealerScore + 10 > 16){
-                if (score === "ACE"){
-                value = 11;            
-                }
-            }         
-        }
-
-    }
-
-    else {
-        value = Number(score)
-    }
-    if(player === "player"){
-        playerScore += value
-        playerDisplay.textContent = playerScore
-    } else {
-        dealerScore += value
-        dealerDisplay.textContent = dealerScore
-    }
- }
-
- function play(){
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`)
-    .then(response => response.json())
-    .then(data => {
-       
-        for(i=0; i < data.length; i++){
-        if(score === "JACK" || score === "QUEEN" || score === "KING"){
-            data[i].value = 10
-        } 
-        }
-
-        let cards = data.cards
-        for(let i = 0; i < cards.length; i++){
-            console.log(cards[i])
-            let image = document.createElement("img")
-            image.src = cards[i].image
-            image.alt = cards[i].code
-            
-            if(i < 2){
-                playerHand.appendChild(image)
-
-                // let playerValue = Number(cards[0].value) + Number(cards[2].value)
-
-                addToScore(cards[i].value, "player")
-
-             
-                // addToScore(cards[0].value, "player")
-                // addToScore(cards[2].value, "player")
-
-
-                console.log(cards[0].value)
-                console.log(cards[1].value)
-                console.log(cards[2].value)
-                console.log(cards[3].value)
-
-                // let dealerValue = (cards[1].value + cards[3].value)
-
-                // addToScore(playerValue, "player")
-                // addToScore(dealerValue, "dealer")
-
-            }
-            else {
-                dealerHand.appendChild(image)
-                addToScore(cards[i].value, "dealer")
-            }   
-
-        }
-            // playBtn.classList.toggle("hidden")
-            hitBtn.classList.toggle("hidden")
-            stayBtn.classList.toggle("hidden")
-    })
-    .catch(err => console.log(err))
-
 
 }
 
+// function checkAce(card) {
+//  if (has Ace = true) {
 
+//  }
 
-// giveCard( PLAYER );
-// giveCard( DEALER );
-// giveCard( PLAYER );
-// giveCard( DEALER );
-// dealer= ((card[1] + card[3])
-// player= ((card[0] + card[2])
-// dealerDisplay, card[3], visibility: hidden
-//after player done acting, visibility: show
+// if (card[0] == "A") {
 
+// }
 
-
-
-function drawCard(){
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
-    .then(response => response.json())
-    .then(data => {
-        let card = data.cards[0]
-        let image = document.createElement("img")
-        image.src = card.image
-        image.alt = card.code
-        playerHand.appendChild(image)
-        addToScore(card.value, "player")
-        checkTotal()
-    })
-    .catch(err => console.log(err))
-}
-
-
-function dealerDraw(){
-    fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`)
-    .then(response => response.json())
-    .then(data => {
-        let card = data.cards[0]
-        let image = document.createElement("img")
-        image.src = card.image
-        image.alt = card.code
-        dealerHand.appendChild(image)
-        addToScore(card.value, "dealer")
-        evaluateWinner()
-    })
-    .catch(err => console.log(err))
-}
-
-function checkBJ(){
-        if(hasAce = true){
-        let winner;
-        if(dealerScore === 21){
-            winner = "deal bj"
-        }        
-        else if(dealerScore === 21){
-            winner = "Dealer Blackjack"
-        }
-        else if(playerScore === 21){
-            winner = "Player Blackjack"
-        }
-        displayWinner(winner)
-    }
-}
-
-
-function evaluateWinner(){
-    if(dealerScore < 17){
-        dealerDraw()
-    }
-    else {
-        let winner;
-        if(playerScore === dealerScore){
-            winner = "NO ONE"
-        } else if(playerScore === 21 || dealerScore > 21 ||playerScore > dealerScore){
-            winner = "PLAYER"
-        } else {
-            winner = "DEALER"
-        }
-        displayWinner(winner)
-    }   
-}
-
-function checkTotal(){
-    if(playerScore > 21){
-        displayWinner("DEALER")
-    }
-}
-
-function displayWinner(winner){
-    winnerDisplay.textContent = `${winner} WINS!`
-    dealerDisplay.textContent = dealerScore
-    hitBtn.classList.toggle("hidden")
-    stayBtn.classList.toggle("hidden")
-    newBtn.classList.toggle("hidden")
-}
-
-
-
-
-
-//     let blackjack;
-//     if(value === "JACK" || value === "QUEEN" || value === "KING" || value === 10){
-//         if(value === "ACE"){
-//         console.log("BLACKJACK BIATCH")
-//         }
-//     }
 // }
 
 
