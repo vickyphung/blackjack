@@ -1,11 +1,133 @@
-#player-hand img {
-    height: 175px;
-    width: 125px;
-    margin: 1px;
+
+.board{
+    width: 80%;
 }
+
+/* div img {
+    height: 20%;
+    width: 125px;
+    margin: 5px;
+} */
 
 #dealer-hand img {
     height: 175px;
     width: 125px;
-    margin: 1px;
+    margin: 20px;
+}
+
+#player-hand img {
+    height: 175px;
+    width: 125px;
+    margin: 20px;
+}
+
+img{
+    border: 0.5rem outset pink;
+    outline: 0.5rem solid khaki;
+    box-shadow: 0 0 0 1rem skyblue;
+    border-radius: 12px;
+    font: bold 1rem sans-serif;
+    margin-left: 150px;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    /* min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%; */
+}
+
+.card-img{
+    height: 25%;
+    width: 25%;
+
+}
+div {
+    border: 1px none green;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    align-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+ 
+}
+
+h1{
+    font-size: 70px;
+    overflow: hidden;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.gameButtons {
+    border-left:  5px solid black;
+    border-right:  5px solid black;
+}
+.gameButtons button{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    padding: 7px;
+    margin: 5px;
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: bold;
+    line-height: 2.5;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    width: 100px;
+}
+
+.gameButtons button:hover {
+    background-color: rgb(240, 16, 184); 
+    color: white;
+  }
+
+.dScore, .pScore{
+
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.dScore{
+    border-top: 5px solid black;
+    padding-top: 20px;
+}
+  .pHand, .dHand{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  
+  }
+
+
+
+  .playerSeat{
+      border: 5px none khaki;
+  }
+
+  .dealerSeat{
+      border: 8px none rgb(4, 245, 132);
+      margin-bottom: 30px;
+      
+  }
+
+  .hide {
+      display: hidden;
+  }
+
+  .message{
+
+    color: rgb(78, 80, 80);
+      font-size: 20px;
+      padding-bottom: 20px;
+  }
+
+  .head{
+    border: 5px solid black;
+}
+
+.gamePlay {
+    border: 5px solid black;
+    font-size: 30px;
 }

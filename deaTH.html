@@ -9,12 +9,16 @@
 </head>
 
 <body>
-<div class="head"></div>
-<div id="msgbox" class="message"> MESSAGE</div>
+
+<div class="board">
+
+<div class="head"><h1>BLACKJACK</h1></div>
+
+
 <div id="game-buttons" class="gameButtons">
-   
-   
-    <button id="dealCards" onclick=window.location.reload();>Deal Cards</button>
+
+    <button class="refreshBtn" onClick="window.location.reload();">Shuffle</button>
+    <button id="dealCards" onclick=removeCard()>Deal</button>
     <button id="hit" onclick=hit()>Hit</button>
     <button id="stay" onclick=stay()>Stand</button>
 </div>
@@ -22,37 +26,46 @@
 
 <div id="game-play" class="gamePlay">
 
-    <div id="player-score" class="pScore">pS</div>
-    <div id="player-hand" class="pHand"></div>
+    <div class="playerSeat">
+        <div id="player-score" class="pScore"></div>
+<div id="msgbox" class="message"></div>
 
-    
-    <div id="dealer-score" class="dScore">dS</div>        
-    <div id="dealer-hand" class="dHand">
-        <img id="hidden" src="C:\Users\vicky\Desktop\SoftwareEngineering\black-jack\cards\BACK.png">
+        <div id="player-hand" class="pHand"></div>
+
+    </div>
+    <div class="dealerSeat">
+        <div id="dealer-score" class="dScore"></div>        
+        <div id="dealer-hand" class="dHand">
+            <img id="hidden" src="C:\Users\vicky\Desktop\SoftwareEngineering\black-jack\cards\BACK.png">
+        </div>
     </div>
 </div>
 
-<!-- <div id="playButtons">
+
+
+<div id="bettingArea">
+    <div id="betButtons">
+        <button id="ten" onclick=addTen()>10$</button>
+        <button id="twenty" onclick=addTwenty()>20$</button>
+        <button id="fifty" onclick=addFifty()>50$</button>
+        <div id="totalBet"></div>
+    </div>
+    <div id="bank-roll" class="bank">MONIES</div>
+</div>
+
+
+
+<div id="playButtons">
     <button>Split</button>
     <button>Double Down</button>
     <button>Surrender</button>
-</div> -->
-
-<!-- <div id="bet">
-    <div id="betButtons">
-        <button id="ten">10$</button>
-        <button id="twenty">20$</button>
-        <button id="fifty">50$</button>
-    </div>
-    <div id="bank-roll" class="bank"></div>
-</div> -->
+</div>
 
 
 
+</div>
 
+<script src="./death.js"></script>
 
-
-
-  <script src="./death.js"></script>
 </body>
 </html>

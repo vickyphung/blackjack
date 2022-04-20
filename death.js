@@ -1,30 +1,38 @@
 
+// BLACKJACK? end Game
+// Deal new cards: keep bank score || Clear out old cards and reset score.
 
+//toggle, display none, class hide
+// Surrender
+// Insurance
 
+// Double Down
+
+// Split
 
 const shuffleBtn = document.getElementById("shuffle")
 const hitBtn = document.getElementById("hitCard")
 const stayBtn = document.getElementById("stay")
 const dealBtn = document.getElementById("dealCards")
-
-
 const playerHand = document.getElementById("player-hand")
 const dealerHand = document.getElementById("dealer-hand")
-
 const playScoreDisplay = document.getElementById("player-score")
 const dealerScoreDisplay = document.getElementById("dealer-score")
 const messageDisplay = document.getElementById("msgbox");
-
+const betTen = document.getElementById("ten")
+const betTwenty = document.getElementById("twenty")
+const betFifty = document.getElementById("fifty")
+const monies = document.getElementById("bank-roll")
+const betTotal = document.getElementById("totalBet")
 
 let playerScore = 0;
 let dealerScore = 0;
-
-
+let bet = 0;
+let bank = 1000;
 
 let hidden;
 let deck;
-
-
+let drawCard = true;
 
 window.onload = function() {
     buildDeck();
@@ -42,7 +50,6 @@ function buildDeck() {
             deck.push(values[j] + "-" + suits[i]); 
         }
     }
-
     console.log("created deck");
     console.log(deck);
 }
@@ -54,13 +61,9 @@ function shuffleDeck() {
         deck[i] = deck[j];
         deck[j] = temp;
     }
-    console.log(deck);
     console.log("shuffled deck");
+    console.log(deck);
 }
-
-
-
-
 
 function getValue(card) {
     let data = card.split("-"); 
@@ -72,6 +75,13 @@ function getValue(card) {
         return 10;
         }
     } 
+
+    if (isNaN(value)) { 
+        if(value == "A") {
+            hasAce = true;
+            console.log("HAS AN ACE")
+        } 
+    }
 
 //Evaluates whether Ace is 1 or 11
     let ds = dealerScore + 11;
@@ -87,12 +97,25 @@ function getValue(card) {
         return 1; 
     }
     return parseInt(value);
+
 }
 
 
+//CLEAR OUT CARDS.....
 
+function removeCard(){
+while(playerHand.firstChild){
+    playerHand.removeChild(playerHand.firstChild)
+    }
+
+while(dealerHand.firstChild){
+      dealerHand.removeChild(dealerHand.firstChild)
+      }
+
+}
 //DEAL CARDS
 function startGame() {
+
 
 //Deals a hidden card to the dealer.
     hidden = deck.pop();
@@ -104,7 +127,6 @@ function startGame() {
     console.log(dealerScore);
   
 //Deals a second card to the dealer hand.
-// while (dealerScore < 17) {
       for (let i = 0; i < 1; i++) {
         let cardImg = document.createElement("img");
         let card = deck.pop();
@@ -114,98 +136,71 @@ function startGame() {
         document.getElementById("dealer-hand").append(cardImg);
 }
         console.log(dealerScore);
-    // }
-
-    dealerScoreDisplay.textContent = ` DEALER ?`
+        dealerScoreDisplay.textContent = ` DEALER: ?`
 
 //Deals 2 cards to the player.
     for (let i = 0; i < 2; i++) {
+        let cardImg = document.createElement("img");
+        let card = deck.pop();
+        
+        cardImg.src = "./cards/" + card + ".png";
+        playerScore += getValue(card);
+        // yourAceCount += checkAce(card);
+        document.getElementById("player-hand").append(cardImg);
+    
+        console.log("Player Cards Delt in Loop (x2)")
+        console.log(card)
+    }
+    console.log("Player Hand Should Append, PlayerScore Update")
+    console.log(playerScore);
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+}
+
+//PLAYER HIT CARD.
+function hit() {
+    if (!drawCard) {
+        return;
+    }
+    for (let i = 0; i < 1; i++) {
         let cardImg = document.createElement("img");
         let card = deck.pop();
         cardImg.src = "./cards/" + card + ".png";
         playerScore += getValue(card);
         // yourAceCount += checkAce(card);
         document.getElementById("player-hand").append(cardImg);
-
+    
         console.log("Player Cards")
         console.log(card)
+    }
+//If Player goes over 21 while hitting.
+    if (playerScore > 21) {
+        drawCard = false;
+        messageDisplay.textContent = "Oh No, Busted ㋛ You Lose.";
+//If player busts, reveal dealer card and dealer score.
+        document.getElementById("hidden").src = "./cards/" + hidden + ".png";
+        dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
+
+        bank -= bet;
+        message = `You lost ${bet}.`
+        console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
+
+        monies.textContent = `You have $${bank}`
+        bet = 0;
+
+        betTotal.textContent = `Your current bet is ${bet}`
+
+
     }
 
     console.log("Player Hand Should Append, PlayerScore Update")
     console.log(playerScore);
-    playScoreDisplay.textContent = `PLAYER ${playerScore}`
-
-
-    document.getElementById("hit").addEventListener("click", hit);
-    document.getElementById("stay").addEventListener("click", stay);
-
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
 }
 
-
-
-
-
-
-function hit() {
-    // if (!drawCard) {
-    //     return;
-    // }
-
-    let cardImg = document.createElement("img");
-    let card = deck.pop();
-    cardImg.src = "./cards/" + card + ".png";
-    
-    playerScore+= getValue(card);
-
-    document.getElementById("player-hand").append(cardImg);
-    
-
-    // if (playerScore >21){
-    //     drawCard = false;
-    // }
-    
-    
-    console.log("Player got a hit card, Score update")
-    console.log(playerScore)
-    playScoreDisplay.textContent = `PLAYER ${playerScore}`
-}
-
-
+//Stand function, essentially evaluates score and ends game.
 function stay() {
-
-
-    canHit = false;
+    drawCard = false;
     document.getElementById("hidden").src = "./cards/" + hidden + ".png";
-
-    let message = "";
-    if (playerScore > 21) {
-        message = "Busted! :(";
-    }
-    else if (dealerScore > 21) {
-        message = " Dealer Busts. You win! :D";
-    }
-    //both you and dealer <= 21
-    else if (playerScore == dealerScore) {
-        message = "Tie!";
-    }
-    else if (playerScore > dealerScore) {
-        message = "You Win! YAY!";
-    }
-    else if (playerScore < dealerScore) {
-        message = "You Lose! :(";
-    }
-
-
-    // document.getElementById("dealer-sum").innerText = dealerSum;
-    // document.getElementById("your-sum").innerText = yourSum;
-    // document.getElementById("msgbox").innerText = message;
-
-    playScoreDisplay.textContent = `PLAYER ${playerScore}`
-    dealerScoreDisplay.textContent = `DEALER ${dealerScore}`
-    messageDisplay.textContent = message;
-
-    console.log(message)
-
 
     while (dealerScore < 17) {
         //   for (let i = 0; i < 1; i++) {
@@ -217,26 +212,86 @@ function stay() {
             document.getElementById("dealer-hand").append(cardImg);
     }
 
+    let message = "";
+    if (playerScore > 21) {
+        message = "Busted! :(";
+        bank -= bet;
+        message = `You lost ㋛.`
+        console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
 
+    }
+    if (dealerScore > 21) {
+ 
+        message = `😃 Dealer Busts. You Win! YAY! 💰💰`;
+
+        bank += bet;
+        monies.textContent = `You have $${bank}`
+        console.log(`You win ${bet}. Have $${bank}.`)
+
+    }
+    else if (playerScore == dealerScore) {
+        message = "Tie!";
+    }
+    else if (playerScore > dealerScore) {
+        message = `😃 You Win! YAY! 💰💰`;
+
+        bank += bet;
+        monies.textContent = `You have $${bank}`
+        console.log(`You win ${bet}. Have $${bank}.`)
+
+    }
+    else if (playerScore < dealerScore) {
+        message = "You Lose! ㋛";
+
+        bank -= bet;
+        monies.textContent = `You have $${bank}`
+        console.log(`Lost ${bet}. Have $${bank} left.`)
+    }
+
+    playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+    dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
+    messageDisplay.textContent = message;
+    console.log(message)
+
+    monies.textContent = `You have $${bank}`
+    bet = 0;
+    betTotal.textContent = `Your current bet is ${bet}`
 }
 
+function addTen(){
+    bet += 10;
+    console.log("You added $10 to you bet.")
+    console.log(bet)
+    betTotal.textContent = `Your current bet is ${bet}`
+}
+function addTwenty(){
+    bet += 20;
+    console.log("You added $20 to you bet.")
+    console.log(bet)
+    betTotal.textContent = `Your current bet is ${bet}`
+}
+function addFifty(){
+    bet += 50;
+    console.log("You added $50 to you bet.")
+    betTotal.textContent = `Your current bet is ${bet}`
+}
 
-
+monies.textContent = `You have $${bank}`
+betTotal.textContent = `Your current bet is ${bet}`
 
 
 
 
 
 // function checkAce(card) {
-//     if (card[0] == "A") {
-//         return 1;
-//     }
-//     return 0;
+//  if (has Ace = true) {
+
+//  }
+
+// if (card[0] == "A") {
+
 // }
 
-// function reduceAce(playerScore, playerAceCount) {
-//     while (playerScore > 21 && playerAceCount > 0) {
-//         playerScore -= 10;
-//         playerAceCount -= 1;
-//     }
-//     return playerScore;
+// }
+
+
