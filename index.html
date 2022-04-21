@@ -9,67 +9,50 @@
 </head>
 
 <body>
+    <div class="wholeArea">
+        <div class="head"><h1>BLACKJACK</h1></div>
 
-<div class="wholeArea">
-
-<div class="head"><h1>BLACKJACK</h1></div>
-
-
-<div id="game-buttons" class="gameButtons">
-
-    <button class="refreshBtn" onClick="window.location.reload();">Shuffle</button>
-
-    <button id="hit" onclick=hit()>Hit</button>
-    <button id="stay" onclick=stay()>Stand</button>
-    <button id="hit" onclick=dealHands()>Deal</button>
-
-
-    
-</div>
-
-
-<div id="game-play" class="gamePlay">
-
-    <div class="playerSeat">
-        <div id="player-score" class="pScore"></div>
-<div id="msgbox" class="message"></div>
-
-        <div id="player-hand" class="pHand"></div>
-
-    </div>
-    <div class="dealerSeat">
-        <div id="dealer-score" class="dScore"></div>        
-        <div id="dealer-hand" class="dHand">
-            <img id="hidden" src="./cards/BACK.png">
+        <div id="game-buttons" class="gameButtons">          
+            <button onClick="window.location.reload();">Shuffle</button>
+            <button id="hit" onclick=hit()>Hit</button>
+            <button id="stay" onclick=stay()>Stand</button>
+            <button id="deal" onclick=dealHands()>Deal</button>
         </div>
+
+        <div class="bettingArea">
+            <div id="betButtons">
+                <div class="tenbet">
+                    <button id="ten" onclick=addTen()>10$</button>
+                    <button id="twenty" onclick=addTwenty()>20$</button>
+                    <button id="fifty" onclick=addFifty()>50$</button>    
+                    <text id="totalBet" class="betTotal"></text>
+                    <div id="bank-roll" class="bank">MONIES</div>
+                </div>
+            </div>
+        </div>
+ 
+        <div id="game-play" class="gamePlay">
+            <div class="playerSeat">
+                <div id="player-score" class="pScore"></div>
+                <div id="msgbox" class="message"></div>
+                <div id="player-hand" class="pHand"></div>
+            </div>
+
+            <div class="dealerSeat">
+                <div id="dealer-score" class="dScore"></div>        
+                <div id="dealer-hand" class="dHand">
+                    <img id="hidden" src="./cards/BACK.png">
+                </div>
+            </div>
+        </div>
+
+        <div id="playButtons">
+            <button>Split</button>
+            <button>Double Down</button>
+            <button id="xx" onclick=surrender()>Surrender</button>
+        </div>
+
     </div>
-</div>
-
-
-
-<div id="bettingArea">
-    <div id="betButtons">
-        <button id="ten" onclick=addTen()>10$</button>
-        <button id="twenty" onclick=addTwenty()>20$</button>
-        <button id="fifty" onclick=addFifty()>50$</button>
-        <div id="totalBet"></div>
-    </div>
-    <div id="bank-roll" class="bank">MONIES</div>
-</div>
-
-
-
-<div id="playButtons">
-    <button>Split</button>
-    <button>Double Down</button>
-    <button id="xx" onclick=surrender()>Surrender</button>
-</div>
-
-
-
-</div>
-
-<script src="./app.js"></script>
-
+    <script src="./app.js"></script>
 </body>
 </html>

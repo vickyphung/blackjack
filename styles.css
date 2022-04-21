@@ -28,15 +28,12 @@ div {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
- 
 }
-
 h1{
     font-size: 70px;
     overflow: hidden;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
-
 .gameButtons {
     border-left:  5px solid black;
     border-right:  5px solid black;
@@ -57,22 +54,20 @@ h1{
     -webkit-border-radius: 10px;
     width: 100px;
 }
-
 .gameButtons button:hover {
     background-color: rgb(240, 16, 184); 
     color: white;
   }
 
 .dScore, .pScore{
-
     margin-top: 20px;
     margin-bottom: 10px;
 }
-
 .dScore{
     border-top: 5px solid black;
     padding-top: 20px;
 }
+
 .pHand, .dHand{
     display:inline-flex;
     justify-content: space-around;
@@ -80,72 +75,97 @@ h1{
     gap: 1px;
     align-items: center;
     }
-
 .pHand{
     justify-content: center;
     align-items: center;
     align-content: center;
     gap: 1px;
 }
-  .pCards {
+.pCards {
     border: 1px none green;
     justify-content: flex-start;
     align-self: center;
     height: auto;
-
-
-
 }
-
 .pCards img{
     height: auto;
-
     max-width: 100%;
 }
-
-
-  .playerSeat{
-      border: 5px none khaki;
-  }
-
-  .dealerSeat{
-      border: 8px none rgb(4, 245, 132);
-      margin-bottom: 30px;
-      
-  }
-
-  .hide {
-      visibility: hidden;
-  }
-  
-  .show {
-      visibility: visible; 
-  }
-
-  .message{
-
-    color: rgb(78, 80, 80);
-      font-size: 20px;
-      padding-bottom: 20px;
-  }
-
-  .head{
-    border: 5px solid black;
+.dealerSeat{
+    border: 8px none rgb(4, 245, 132);
+    margin-bottom: 30px;
+}
+.hide {
+    visibility: hidden;
+} 
+.show {
+    visibility: visible; 
 }
 
+.message{
+    color: rgb(255, 113, 42);
+    font-size: 24px;
+    padding-bottom: 20px;
+}
+.head{
+    border: 5px solid black;
+}
 .gamePlay {
     border: 5px solid black;
     font-size: 30px;
 }
-
 #dealer-hand img {
     height: 175px;
     width: 125px;
     margin: 20px;
 }
-
 #player-hand img {
     height: 175px;
     width: 125px;
     margin: 20px;
 }
+#betButtons {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+}
+#betButtons button {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    padding: 3px;
+    margin: 5px;
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: bold;
+
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    width: 100px;
+}
+#betButtons button:hover {
+    background-color: rgb(177, 20, 177); 
+    color: white;
+}
+.tenbet button:hover {
+    background-color: yellow;
+    color:black;
+}
+.betTotal, .bank {
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    border: 3px solid black;
+    padding: 4px;
+    margin: 5px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+ 
