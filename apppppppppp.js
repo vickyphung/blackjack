@@ -1,12 +1,13 @@
 
 // BLACKJACK? end Game (+insurance option)
-
+//bj: tried boolean hasAce and playerscore/dealerscore = 21
+//tried if has  J Q K and A
 
 //insurance:if dealer has ace **SHOWING** (aka dealers second card) = insurance option show, buy insurance->
 // insurance cost half the bet, if dealer has an ace,
 //pay out 2:1
 
-
+// Deal dealer hidden card on deal
 
 
 //Resize for window browser
@@ -15,13 +16,8 @@
 
 
 //Double
-// // Split
+// Split
 
-// create //array
-// value = value
-// remove first firstChild
-// creaate a hidden div, 
-// otherhand . push (playerhand.pop())
 
 
 
@@ -81,6 +77,42 @@ function shuffleDeck() {
     console.log(deck);
 }
 
+function startGame() {
+    //Deals a hidden card to the dealer.
+        hidden = deck.pop();
+        dealerScore += getValue(hidden);
+        // dealerAceCount += checkAce(hidden);
+        console.log("Dealer Hidden Card " + hidden + "  Dealer Score  " + dealerScore)  
+    //Deals a second card to the dealer hand.
+        for (let i = 0; i < 1; i++) {
+            let cardImg = document.createElement("img");
+            let card = deck.pop();
+            cardImg.src = "./cards/" + card + ".png";
+            dealerScore += getValue(card);
+            // dealerAceCount += checkAce(card);
+            document.getElementById("dealer-hand").append(cardImg);
+        }
+        console.log(dealerScore);
+        dealerScoreDisplay.textContent = ` DEALER: ?`
+    //Deals two cards to the player. Appends card images to div, which appends to the player hand. 
+        for (let i = 0; i < 2; i++) {
+            let cardImg = document.createElement("img");
+            let card = deck.pop();
+        
+            let div = document.createElement("div");
+            cardImg.src = "./cards/" + card + ".png";
+            div.append(cardImg)
+            div.classList.add("pCards");
+            // playerScore += getValue(card);
+            // yourAceCount += checkAce(card);
+            document.getElementById("player-hand").appendChild(div);
+            console.log("Player Card Dealt  " + card)
+            playerScore += getValue(card);
+            console.log("Player Score Update  " + playerScore)
+            playScoreDisplay.textContent = `PLAYER: ${playerScore}`
+        }
+    }
+    
 function getValue(card) {
     let data = card.split("-"); 
     let value = data[0];
@@ -103,62 +135,15 @@ function getValue(card) {
     let ps = playerScore + 11;
 
     if (isNaN(value)) { 
-        if (hasAce === true &&(ps<22)&&(ps>16)) { 
+        if (value == "A"&&(ps<22)&&(ps>16)) { 
                     return 11;
         }
-        if (hasAce === true &&(ds<22)&&(ds>16)) { 
+        if (value == "A"&&(ds<22)&&(ds>16)) { 
             return 11;
         }
         return 1; 
     }
     return parseInt(value);
-}
-
-function checkBj(){
-    if ((hasAce === true) && (playerScore === 21)){
-        messageDisplay.textContent = "BLACKJACK"
-        }
-}
-
-
-function startGame() {
-//Deals a hidden card to the dealer.
-    hidden = deck.pop();
-    dealerScore += getValue(hidden);
-    // dealerAceCount += checkAce(hidden);
-    console.log("Dealer Hidden Card " + hidden + "  Dealer Score  " + dealerScore)  
-//Deals a second card to the dealer hand.
-    for (let i = 0; i < 1; i++) {
-        let cardImg = document.createElement("img");
-        let card = deck.pop();
-        cardImg.src = "./cards/" + card + ".png";
-        dealerScore += getValue(card);
-        // dealerAceCount += checkAce(card);
-        document.getElementById("dealer-hand").append(cardImg);
-    }
-    console.log(dealerScore);
-    dealerScoreDisplay.textContent = ` DEALER: ?`
-//Deals two cards to the player. Appends card images to div, which appends to the player hand. 
-    for (let i = 0; i < 2; i++) {
-        let cardImg = document.createElement("img");
-        let card = deck.pop();
-    
-        let div = document.createElement("div");
-        cardImg.src = "./cards/" + card + ".png";
-        div.append(cardImg)
-        div.classList.add("pCards");
-        // playerScore += getValue(card);
-        // yourAceCount += checkAce(card);
-        document.getElementById("player-hand").appendChild(div);
-        console.log("Player Card Dealt  " + card)
-        playerScore += getValue(card);
-        console.log("Player Score Update  " + playerScore)
-        playScoreDisplay.textContent = `PLAYER: ${playerScore}`
-    }
-
-    if ((hasAce === true) && (playerScore === 21)){
-        messageDisplay.textContent = "BLACKJACK"
-        }
 }
 
 
@@ -310,16 +295,7 @@ function dealHands(){
         console.log("Player Score Update  " + playerScore)
         playScoreDisplay.textContent = `PLAYER: ${playerScore}`
     }
-
-    let hiddenDealerCard = document.createElement("img");
-    hiddenDealerCard.id = "hidden"
-    hiddenDealerCard.src = "./cards/BACK.png"
-
-    dealerHand.appendChild(hiddenDealerCard);
-
-
-
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 2; i++) {
         let cardImg = document.createElement("img");
         let card = deck.pop();
         cardImg.src = "./cards/" + card + ".png";
@@ -331,6 +307,11 @@ function dealHands(){
     dealerScoreDisplay.textContent = ` DEALER: ?`
 }
 
+function checkbj(){
+    if (dealerScore = 21) {
+        messageDisplay.textContent = "BJJSDGFADJ"
+    }
+}
 function surrender(){
     bet = bet/2;
     bank = bank - bet;
@@ -344,40 +325,13 @@ function surrender(){
 
 
 
-// ...ideas to check for BJ.
-
-// function checkbj(){
-
-//     if (dealerScore = 21) {
-//         messageDisplay.textContent = "WAA BLACKJACK"
-//     }
-
-   
- 
-
-
-
-
-//     if (hasAce = true){
-
-//     }
-
-//         if( (value == "A") && (dealerScore == 21)
-
-
-
-    //     if( (value == "A" && (value == "J" || value == "Q" || value === "K") )
-    
-    // if (card[0] == "A")
-
-    // if (card[i].length < 3 && playerScore = 21 )
 
 
 
 
 
 
-//FAKE STAND BTN
+
 function dealerHiddenCard(){
 
     drawCard = false;
