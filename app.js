@@ -1,27 +1,21 @@
 
-// BLACKJACK? end Game (+insurance option)
-
-
-//insurance:if dealer has ace **SHOWING** (aka dealers second card) = insurance option show, buy insurance->
-// insurance cost half the bet, if dealer has an ace,
-//pay out 2:1
-
-
-
-
+// BLACKJACK
+//INSURANCE
+//(ACE VALUE ON HIT CARDS...)
 //Resize for window browser
-//Mobile Friendly?
+//Mobile Friendly
 
+//insurance
+    //if dealer has ace **SHOWING** (aka dealers second card) = insurance option show, buy insurance->
+    // insurance cost half the bet, if dealer has an ace,
+    //pay out 2:1
 
-
-//Double
-// // Split
-
-// create //array
-// value = value
-// remove first firstChild
-// creaate a hidden div, 
-// otherhand . push (playerhand.pop())
+// Split
+    // create //array
+    // value = value
+    // remove first firstChild
+    // creaate a hidden div, 
+    // otherhand . push (playerhand.pop())
 
 
 
