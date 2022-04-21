@@ -18,10 +18,13 @@
 <div id="game-buttons" class="gameButtons">
 
     <button class="refreshBtn" onClick="window.location.reload();">Shuffle</button>
-    <button id="dealCards" onclick=dealNextRound()>Deal</button>
+
     <button id="hit" onclick=hit()>Hit</button>
     <button id="stay" onclick=stay()>Stand</button>
+    <button id="hit" onclick=dealHands()>Deal</button>
 
+    <button id="hit" onclick=dealerHiddenCard()>x</button>
+    
 </div>
 
 
@@ -59,7 +62,7 @@
 <div id="playButtons">
     <button>Split</button>
     <button>Double Down</button>
-    <button>Surrender</button>
+    <button id="xx" onclick=surrender()>Surrender</button>
 </div>
 
 
