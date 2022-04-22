@@ -1,6 +1,7 @@
 
 .wholeArea{
     width: 80%;
+
 }
 img{
     border: 0.5rem outset pink;
@@ -58,7 +59,11 @@ h1{
     background-color: rgb(240, 16, 184); 
     color: white;
   }
-
+.gameButtons button:active{
+    background-color: rgb(240, 16, 184);
+    box-shadow: 0 3px rgb(236, 182, 238);
+    transform: translateY(2px);
+  }
 .dScore, .pScore{
     margin-top: 20px;
     margin-bottom: 10px;
@@ -123,10 +128,9 @@ h1{
 }
 #betButtons {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-direction: row;
-    border-left: 5px solid black;
-    border-right: 5px solid black;
+
 }
 #betButtons button {
     font-family: Arial, Helvetica, sans-serif;
@@ -139,42 +143,58 @@ h1{
     letter-spacing: 2px;
     font-weight: bold;
 
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    border-radius: 50%;
+
+    /* -moz-border-radius: 10px;
+    -webkit-border-radius: 10px; */
     width: 100px;
 }
 #betButtons button:hover {
-    background-color: rgb(177, 20, 177); 
+    background-color: rgb(23, 184, 130); 
     color: white;
 }
-.tenbet button:hover {
-    background-color: yellow;
-    color:black;
-}
+
 .betTotal {
     letter-spacing: 2px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 22px;
-    border: 3px solid black;
-    padding: 5px;
+    border: 2.5px solid black;
+    padding: 10px;
     margin: 5px;
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+    background-color: white;
+    
+   
 }
 
-.bank {
+.bettingArea{
     border-left: 5px solid black;
     border-right: 5px solid black;
-    border-top: 5px solid black; ;
+}
+
+
+
+.bank {
+
     letter-spacing: 2px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 22px;
 
-    padding: 5px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    border: 2.5px solid black;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-color: white;
 
 
 }
@@ -185,3 +205,12 @@ h1{
 .show {
     display: inline-block;}
 
+.moneyScore{
+    display: inline-flex;
+    justify-content: space-between;
+    /* align-items: center; */
+    margin-top: 10px;
+
+    gap: 50px;
+
+}

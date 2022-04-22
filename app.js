@@ -35,6 +35,7 @@ const messageDisplay = document.getElementById("msgbox");
 const betTen = document.getElementById("ten")
 const betTwenty = document.getElementById("twenty")
 const betFifty = document.getElementById("fifty")
+const betHundred = document.getElementById("hundred")
 const monies = document.getElementById("bank-roll")
 const betTotal = document.getElementById("totalBet")
 
@@ -47,6 +48,8 @@ let bank = 1000;
 let hidden;
 let deck;
 let hasAce;
+
+let canHit = true;
 
 window.onload = function() {
     buildDeck();
@@ -185,6 +188,7 @@ function hit() {
     }
 //If Player goes over 21 while hitting.
     if (playerScore > 21) {
+        
         messageDisplay.textContent = "Oh No, Busted ㋛ You Lose.";
 //If player busts, reveal dealer card and dealer score.
         document.getElementById("hidden").src = "./cards/" + hidden + ".png";
@@ -192,9 +196,10 @@ function hit() {
         bank -= bet;
         message = `You lost ${bet}.`
         console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
-        monies.textContent = `You have $${bank}`
+        monies.textContent = `Bank: $${bank}`
         bet = 0;
-        betTotal.textContent = `Bet ${bet}`
+        betTotal.textContent = `Bet: ${bet}`
+        hideBtn();
 
     }
     console.log("Player Hand Should Append, PlayerScore Update")
@@ -283,6 +288,12 @@ function addFifty(){
     betTotal.textContent = `Bet: ${bet}`
 }
 
+function addHundred(){
+    bet += 100;
+    console.log("You added $100 to you bet.")
+    betTotal.textContent = `Bet: ${bet}`
+}
+
 monies.textContent = `Bank: $${bank}`
 betTotal.textContent = `Bet: ${bet}`
 
@@ -305,12 +316,14 @@ function replaceBtn(){
     betTen.classList.toggle("show")
     betTwenty.classList.toggle("show")
     betFifty.classList.toggle("show")
+    betHundred.classList.toggle("show")
 }
 
 function removeBet(){
     betTen.classList.toggle("hide")
    betTwenty.classList.toggle("hide")
    betFifty.classList.toggle("hide")
+   betHundred.classList.toggle("hide")
 
 }
 function hideBtn(){
@@ -362,12 +375,13 @@ function dealHands(){
     }
 
     if ((hasAce === true) && (playerScore === 21)){
-        messageDisplay.textContent = "YOU WIN! YOU GOT BLACKJACK!!"
+        
         console.log("BLACKJACK");
         bank += ((3/2)*bet);
         monies.textContent = `Bank: $${bank}`
         console.log(`WON ${bet}. NIOCE.`)
-  
+        stay();
+        messageDisplay.textContent = "YOU WIN! YOU GOT BLACKJACK!!"
         }
 
     if ((hasAce === true) && (dealerScore === 21)){
