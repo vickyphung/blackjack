@@ -1,8 +1,11 @@
 // BLACKJACK...end game
 //HIDE/SHOW
-
+//bank=0; refresh
 //Resize for window browser
 //Mobile Friendly
+
+
+//(ACE VALUE......... )
 
 //Insurance
     //if dealer has ace **SHOWING** (aka dealers second card) = insurance option show, buy insurance->
@@ -163,8 +166,9 @@ function startGame() {
         playScoreDisplay.textContent = `PLAYER: ${playerScore}`
     }
     if ((hasAce === true) && (playerScore === 21)){
-        messageDisplay.textContent = "BLACKJACK"
+        messageDisplay.textContent = "PLAYER BLACKJACK! NICE!"
         }
+       
 }
 
 //PLAYER HIT CARD.
@@ -191,6 +195,7 @@ function hit() {
         monies.textContent = `You have $${bank}`
         bet = 0;
         betTotal.textContent = `Bet ${bet}`
+
     }
     console.log("Player Hand Should Append, PlayerScore Update")
     console.log(playerScore);
@@ -199,7 +204,7 @@ function hit() {
 }
 //Stand function, essentially evaluates score and ends game.
 function stay() {
-    //hideBtn();
+    hideBtn();
     document.getElementById("hidden").src = "./cards/" + hidden + ".png";
     while (dealerScore < 17) {
         // for (let i = 0; i < 1; i++) {
@@ -219,36 +224,45 @@ function stay() {
         bank -= bet;
         message = `You lost ㋛.`
         console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
+        
     }
     if (dealerScore > 21) {
         message = `😃 Dealer Busts. You Win! YAY! 💰💰`;
         bank += bet;
-        monies.textContent = `You have $${bank}`
+        monies.textContent = `Bank: $${bank}`
         console.log(`You win ${bet}. Have $${bank}.`)
+    
     }
     else if (playerScore == dealerScore) {
         message = "Tie!";
+       
     }
     else if (playerScore > dealerScore) {
         message = `😃 You Win! YAY! 💰💰`;
 
         bank += bet;
-        monies.textContent = `You have $${bank}`
+        monies.textContent = `Bank: $${bank}`
         console.log(`You win ${bet}. Have $${bank}.`)
+   
     }
     else if (playerScore < dealerScore) {
         message = "You Lose! ㋛";
         bank -= bet;
-        monies.textContent = `You have $${bank}`
+        monies.textContent = `Bank: $${bank}`
         console.log(`Lost ${bet}. Have $${bank} left.`)
+        
+
+        
     }
     playScoreDisplay.textContent = `PLAYER: ${playerScore}`
     dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
     messageDisplay.textContent = message;
     console.log(message)
-    monies.textContent = `You have $${bank}`
+    monies.textContent = `Bank: $${bank}`
     bet = 0;
     betTotal.textContent = `Bet: ${bet}`
+
+    replaceBtn();
 }
 
 function addTen(){
@@ -269,15 +283,15 @@ function addFifty(){
     betTotal.textContent = `Bet: ${bet}`
 }
 
-monies.textContent = `You have $${bank}`
+monies.textContent = `Bank: $${bank}`
 betTotal.textContent = `Bet: ${bet}`
 
 function removeCard(){
-    playerScore = 0;
-    playScoreDisplay.textContent = "";
-    dealerScore = 0;
-    dealerScoreDisplay.textContent = "";
-    messageDisplay.textContent="";
+    playScoreDisplay.textContent = " ";
+    dealerScoreDisplay.textContent = " ";
+    messageDisplay.textContent = "";
+    replaceBtn();
+    showBtn();
 
     while(playerHand.firstChild){
         playerHand.removeChild(playerHand.firstChild)
@@ -287,13 +301,32 @@ function removeCard(){
     }
 }
 
+function replaceBtn(){
+    betTen.classList.toggle("show")
+    betTwenty.classList.toggle("show")
+    betFifty.classList.toggle("show")
+}
+
+function removeBet(){
+    betTen.classList.toggle("hide")
+   betTwenty.classList.toggle("hide")
+   betFifty.classList.toggle("hide")
+
+}
 function hideBtn(){
     stayBtn.classList.toggle("hide")
     hitBtn.classList.toggle("hide")
 }
+function showBtn(){
+    stayBtn.classList.toggle("show")
+    hitBtn.classList.toggle("show")
+}
 
 function dealHands(){
+    removeBet();
     removeCard();
+    playerScore = 0;
+    dealerScore = 0;
     // stayBtn.classList.add("hide")
     // hidden = deck.pop();
     for (let i = 0; i < 2; i++) {
@@ -329,21 +362,29 @@ function dealHands(){
     }
 
     if ((hasAce === true) && (playerScore === 21)){
-        messageDisplay.textContent = "BLACKJACK"
+        messageDisplay.textContent = "YOU WIN! YOU GOT BLACKJACK!!"
         console.log("BLACKJACK");
+        bank += ((3/2)*bet);
+        monies.textContent = `Bank: $${bank}`
+        console.log(`WON ${bet}. NIOCE.`)
+  
         }
 
     if ((hasAce === true) && (dealerScore === 21)){
-        messageDisplay.textContent = "BLACKJACK"
-        console.log("BLACKJACK");
+   
+        console.log("DEALER BLACKJACK");
+        // bank -= bet;
+        // monies.textContent = `You have $${bank}`
+        // console.log(`Lost ${bet}. Have $${bank} left.`)
         }
     dealerScoreDisplay.textContent = ` DEALER: ?`
+
 }
 
 function surrender(){
     bet = bet/2;
     bank = bank - bet;
-    monies.textContent = `You have $${bank}`
+    monies.textContent = `Bank: $${bank}`
     removeCard();
     messageDisplay.textContent = "You surrendered. You got half your bet back."
 }
