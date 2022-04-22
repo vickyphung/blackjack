@@ -1,27 +1,39 @@
-// BLACKJACK...end game
-//HIDE/SHOW
-//bank=0; refresh
-//Resize for window browser
-//Mobile Friendly
+//bet $, & limits
+//end game at bank=0
 
 
-//(ACE VALUE......... )
 
-//Insurance
-    //if dealer has ace **SHOWING** (aka dealers second card) = insurance option show, buy insurance->
-    // insurance cost half the bet, if dealer has an ace,
-    //pay out 2:1
-//surrender....button style
-//Double Down 
+//(ACE VALUE......... ) when ace is player first card, problem!
 
-//(ACE VALUE......... )
+//Deals two cards - how do I access each card as its own element
+    // playerCardOne
+    // playerCardTwo
+    // dealerCardOne
+    // dealerCardTwo
 
 // Split
+    //if value of playerCardOne = playerCard Two, option to split
     // create //array
     // value = value
     // remove first firstChild
     // creaate a hidden div, 
     // otherhand . push (playerhand.pop())
+
+//Resize for window browser
+//Mobile Friendly
+
+//Insurance
+    //if dealerCardTwo is "A" = offer insurance and surrender options
+        //insurance = bet/2....
+    //if dealer has ace **SHOWING** (aka dealers second card) = insurance option show, buy insurance->
+    // insurance cost half the bet, if dealer has an ace,
+    //pay out 2:1
+
+//Double Down 
+    //if value of dealerCardOne + dealerCardTwo = 10 || 11
+    // Double down option, w/ hit and stand
+    //DDHIT, DDSTAND, can hit only ONCE.
+
 
 const shuffleBtn = document.getElementById("shuffle")
 const hitBtn = document.getElementById("hit")
@@ -47,7 +59,12 @@ let bank = 1000;
 
 let hidden;
 let deck;
-let hasAce;
+// let hasAce;
+
+let hasAce = false;
+// let dealerhasAce = false;
+// let playerhasAce = false;
+//after true 10+card
 
 let canHit = true;
 
@@ -82,7 +99,7 @@ function shuffleDeck() {
     console.log(deck);
 }
 
-function getValue(card) {
+function getValue(card, player) {
     let data = card.split("-"); 
     let value = data[0];
 
@@ -99,22 +116,48 @@ function getValue(card) {
             console.log("HAS AN ACE")
         } 
     }
+    let score=0;
+if(player==="player"){
+    score=playerScore + 11;
+
+}
+else {
+    score = dealerScore + 11;
+}
 
 //Evaluates whether Ace is 1 or 11.
-    let ds = dealerScore + 11;
-    let ps = playerScore + 11;
 
-    if (isNaN(value)) { 
-        if (hasAce === true &&(ps<22)&&(ps>16)) { 
-                    return 11;
-        }
-        if (hasAce === true &&(ds<22)&&(ds>16)) { 
+
+
+    if (isNaN(value)) {
+        console.log("ping"); 
+        if (hasAce === true &&score<22&&score>16) { 
+            console.log("ping");
             return 11;
         }
         return 1;
     }
     return parseInt(value);
 }
+
+
+//let dealer  hasAce
+//let player hasAce
+
+
+
+// if (isNaN(value)) { 
+//     if (hasAce === true &&(ps<22)&&(ps>16)) { 
+//                 return 11;
+//     }
+//     if (hasAce === true &&(ds<22)&&(ds>16)) { 
+//         return 11;
+//     }
+//     return 1;
+
+
+//create array
+//append card obj to array
     // if (hasAce === true){ 
     //     if ((ps<22)&&(ps>16)) { 
     //         return 11;
@@ -137,7 +180,7 @@ function checkBj(){
 function startGame() {
 //Deals a hidden card to the dealer.
     hidden = deck.pop();
-    dealerScore += getValue(hidden);
+    dealerScore += getValue(hidden, "dealer");
     // dealerAceCount += checkAce(hidden);
     console.log("Dealer Hidden Card " + hidden + "  Dealer Score  " + dealerScore)  
 //Deals a second card to the dealer hand.
@@ -145,14 +188,14 @@ function startGame() {
         let cardImg = document.createElement("img");
         let card = deck.pop();
         cardImg.src = "./cards/" + card + ".png";
-        dealerScore += getValue(card);
+        dealerScore += getValue(card, "dealer");
         // dealerAceCount += checkAce(card);
         document.getElementById("dealer-hand").append(cardImg);
     }
     console.log(dealerScore);
     dealerScoreDisplay.textContent = ` DEALER: ?`
 //Deals two cards to the player. Appends card images to div, which appends to the player hand. 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 1; i < 3; i++) {
         let cardImg = document.createElement("img");
         let card = deck.pop();
     
@@ -160,19 +203,32 @@ function startGame() {
         cardImg.src = "./cards/" + card + ".png";
         div.append(cardImg)
         div.classList.add("pCards");
-        // playerScore += getValue(card);
-        // yourAceCount += checkAce(card);
+
         document.getElementById("player-hand").appendChild(div);
         console.log("Player Card Dealt  " + card)
-        playerScore += getValue(card);
+        playerScore += getValue(card, "player");
         console.log("Player Score Update  " + playerScore)
         playScoreDisplay.textContent = `PLAYER: ${playerScore}`
     }
     if ((hasAce === true) && (playerScore === 21)){
         messageDisplay.textContent = "PLAYER BLACKJACK! NICE!"
         }
-       
 }
+
+//push value to array
+//let cards = [];
+// inside deal and hit
+//push value to array.
+//cards.push(value)
+//when dealing a single card
+// if the new card exists in the current hand
+// then give option to split
+// !!! - new variable?
+// currentHand array
+//playhand2
+//at split, get value, ctreate div for second hand
+
+
 
 //PLAYER HIT CARD.
 function hit() {
@@ -200,6 +256,7 @@ function hit() {
         bet = 0;
         betTotal.textContent = `Bet: ${bet}`
         hideBtn();
+        replaceBet();
 
     }
     console.log("Player Hand Should Append, PlayerScore Update")
@@ -254,10 +311,7 @@ function stay() {
         message = "You Lose! ㋛";
         bank -= bet;
         monies.textContent = `Bank: $${bank}`
-        console.log(`Lost ${bet}. Have $${bank} left.`)
-        
-
-        
+        console.log(`Lost ${bet}. Have $${bank} left.`)  
     }
     playScoreDisplay.textContent = `PLAYER: ${playerScore}`
     dealerScoreDisplay.textContent = `DEALER: ${dealerScore}`
@@ -266,8 +320,7 @@ function stay() {
     monies.textContent = `Bank: $${bank}`
     bet = 0;
     betTotal.textContent = `Bet: ${bet}`
-
-    replaceBtn();
+    replaceBet();
 }
 
 function addTen(){
@@ -301,7 +354,7 @@ function removeCard(){
     playScoreDisplay.textContent = " ";
     dealerScoreDisplay.textContent = " ";
     messageDisplay.textContent = "";
-    replaceBtn();
+    replaceBet();
     showBtn();
 
     while(playerHand.firstChild){
@@ -312,7 +365,7 @@ function removeCard(){
     }
 }
 
-function replaceBtn(){
+function replaceBet(){
     betTen.classList.toggle("show")
     betTwenty.classList.toggle("show")
     betFifty.classList.toggle("show")
@@ -357,6 +410,17 @@ function dealHands(){
         playScoreDisplay.textContent = `PLAYER: ${playerScore}`
     }
 
+    if ((hasAce === true) && (playerScore === 21)){
+        
+        console.log("BLACKJACK");
+        bank += ((3/2)*bet);
+        monies.textContent = `Bank: $${bank}`
+        console.log(`WON ${bet}. NIOCE.`)
+        stay();
+        messageDisplay.textContent = "YOU WIN! YOU GOT BLACKJACK!!"
+        stay();
+    }
+
     let hiddenDealerCard = document.createElement("img");
     hiddenDealerCard.id = "hidden"
     hiddenDealerCard.src = "./cards/BACK.png"
@@ -374,15 +438,7 @@ function dealHands(){
         document.getElementById("dealer-hand").append(cardImg);
     }
 
-    if ((hasAce === true) && (playerScore === 21)){
-        
-        console.log("BLACKJACK");
-        bank += ((3/2)*bet);
-        monies.textContent = `Bank: $${bank}`
-        console.log(`WON ${bet}. NIOCE.`)
-        stay();
-        messageDisplay.textContent = "YOU WIN! YOU GOT BLACKJACK!!"
-        }
+
 
     if ((hasAce === true) && (dealerScore === 21)){
    
