@@ -238,13 +238,14 @@ function hit() {
         console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
         monies.textContent = `Bank: $${bank}`
         bet = 0;
-        betTotal.textContent = `Bet: ${bet}`        
+        betTotal.textContent = `Bet: ${bet}`
+        endBank ();
     }
    
     console.log("Player Hand Should Append, PlayerScore Update")
     console.log(playerScore);
     playScoreDisplay.textContent = `PLAYER: ${playerScore}`
-    //hideBtn();
+    
 }
 //Stand function, essentially evaluates score and ends game.
 function stay() {
@@ -306,8 +307,18 @@ function stay() {
     monies.textContent = `Bank: $${bank}`
     bet = 0;
     betTotal.textContent = `Bet: ${bet}`
-
+    endBank ();
   
+}
+
+function endBank (){
+    if (bank<1){
+        removeCard();
+        hideBtn();
+        removeBet();
+        messageDisplay.textContent = "No More Money :( Shuffle to restart."
+
+    }
 }
 
 function addTen(){
@@ -376,6 +387,7 @@ function showBtn(){
 function dealHands(){
     removeBet();
     removeCard();
+    endBank ();
     playerScore = 0;
     dealerScore = 0;
     for (let i = 0; i < 2; i++) {
