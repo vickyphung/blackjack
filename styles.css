@@ -1,28 +1,14 @@
 
 .wholeArea{
-    width: 80%;
+    width: 90%;
 
 }
-img{
-    border: 0.5rem outset pink;
-    /* outline: 0.5rem solid khaki;
-    box-shadow: 0 0 0 1rem skyblue; */
-    border-radius: 12px;
-    font: bold 1rem sans-serif;
-    margin-left: 150px;
-    padding: 1rem;
-    outline-offset: 0.5rem;
-    /* min-width: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    max-height: 100%; */
+
+/* .card-img{
     max-width: 100%;
     height: auto;
-}
-.card-img{
-    max-width: 100%;
-    height: auto;
-}
+    border: 45px solid green;
+} */
 div {
     border: 1px none green;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -32,7 +18,7 @@ div {
     margin-right: auto;
 }
 h1{
-    font-size: 70px;
+    font-size: 50px;
     overflow: hidden;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
@@ -42,9 +28,9 @@ h1{
 }
 .gameButtons button{
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    padding: 7px;
-    margin: 5px;
+    font-size: 16px;
+    padding: 5pxpx;
+    margin: 3px;
     background-color: black;
     border: 1px solid white;
     color: white;
@@ -60,46 +46,71 @@ h1{
     background-color: rgb(240, 16, 184); 
     color: white;
   }
-.gameButtons button:active{
-    background-color: rgb(240, 16, 184);
-    box-shadow: 0 3px rgb(236, 182, 238);
-    transform: translateY(2px);
-  }
-.dScore, .pScore{
-    margin-top: 20px;
-    margin-bottom: 10px;
+
+.pScore{
+    margin-top: 15px;
+    margin-bottom: 5px;
+
 }
 .dScore{
     border-top: 5px solid black;
-    padding-top: 20px;
+    padding-top: 15px;
+    margin-bottom: 5px;
 }
 
 .pHand, .dHand{
     display:inline-flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 1px;
-    align-items: center;
+
     }
 
 .pCards {
-    border: 1px none green;
+
     height: auto;
+    max-width: 100%;
 }
 .pCards img{
     height: auto;
     max-width: 100%;
+
+
 }
+
+img{
+    border: 0.5rem outset pink;
+    border-radius: 12px;
+    font: bold 1rem sans-serif;
+    padding: 1rem;
+    outline-offset: 0.5rem;
+    max-width: 100px;
+    max-height: 150px;
+    
+    
+}
+#dealer-hand img {
+    height: 150px;
+    width: 100px;
+    margin: 3px;
+    max-width: 100%;
+}
+#player-hand img {
+    height: auto;
+    margin: 3px;
+    max-width: 100%;
+}
+
+
 .dealerSeat{
     border: 8px none rgb(4, 245, 132);
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 
 .message{
     color: rgb(255, 113, 42);
     font-size: 24px;
-    padding-bottom: 20px;
+  
 }
 .head{
     border: 5px solid black;
@@ -108,20 +119,7 @@ h1{
     border: 5px solid black;
     font-size: 30px;
 }
-#dealer-hand img {
-    height: 150px;
-    width: 100px;
-    margin: 20px;
-    position: relative;
-    max-width: 100%;
-}
-#player-hand img {
-    height: 150px;
-    width: 100px;
-    margin: 20px;
-    position: relative;
-    max-width: 100%;
-}
+
 
 #betButtons {
     display: flex;
@@ -131,7 +129,7 @@ h1{
 }
 #betButtons button {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     padding: 3px;
     margin: 5px;
     background-color: black;
@@ -151,7 +149,7 @@ h1{
     letter-spacing: 2px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     border: 2.5px solid black;
     padding: 10px;
     margin: 5px;
@@ -170,7 +168,7 @@ h1{
     letter-spacing: 2px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: 2px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
