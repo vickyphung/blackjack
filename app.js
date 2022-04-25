@@ -17,7 +17,7 @@ const betFifty = document.getElementById("fifty")
 const betHundred = document.getElementById("hundred")
 const monies = document.getElementById("bank-roll")
 const betTotal = document.getElementById("totalBet")
-
+const moneyButtons = document.getElementById("betButtons")
 
 let playerScore = 0;
 let dealerScore = 0;
@@ -66,12 +66,6 @@ function shuffleDeck() {
     console.log(deck);
 }
 
-
-
-
-
-
-
 // function getValue(card, player) {
 //     let data = card.split("-"); 
 //     let value = data[0];
@@ -100,8 +94,6 @@ function shuffleDeck() {
 
 // //Evaluates whether Ace is 1 or 11.
 
-
-
 //     if (isNaN(value)) {
 //         console.log("ping"); 
 //         if (hasAce === true &&playerScore>22) { 
@@ -114,21 +106,6 @@ function shuffleDeck() {
 // }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function getValue(card, player) {
     let data = card.split("-"); 
     let value = data[0];
@@ -139,12 +116,8 @@ function getValue(card, player) {
         return 10;
         }
     } 
-
- 
 //Boolean to check ace.
     if (isNaN(value)) { 
-
-
         let score=0;
         if(player==="player"){
             score=playerScore + 11;
@@ -152,13 +125,10 @@ function getValue(card, player) {
         else {
             score = dealerScore + 11;
         }
-
-
         if(value == "A") {
             hasAce = true;
             console.log("HAS AN ACE")
         }
-   
 
         if (playerScore+11>16 && value == "A") {
             return 11;
@@ -167,24 +137,12 @@ function getValue(card, player) {
             return 1;
         }
 
-
         if (dealerScore+11>16 && value == "A") {
             return 11;
         }
         if (dealerScore<16 && hasAce === true) {
             return 1;
         }
-
-
-
-
-
-     
-
-
-     
-
-     
     }
  return parseInt(value);
 }
@@ -255,7 +213,6 @@ function startGame() {
 
 
 
-
 //PLAYER HIT CARD.
 function hit() {
     for (let i = 0; i < 1; i++) {
@@ -270,7 +227,8 @@ function hit() {
     }
 //If Player goes over 21 while hitting.
     if (playerScore > 21) {
-        
+        hideBtn();
+        replaceBet();
         messageDisplay.textContent = "Oh No, Busted ㋛ You Lose.";
 //If player busts, reveal dealer card and dealer score.
         document.getElementById("hidden").src = "./cards/" + hidden + ".png";
@@ -280,11 +238,9 @@ function hit() {
         console.log(`You busted. Lost ${bet}. Have $${bank} left.`)
         monies.textContent = `Bank: $${bank}`
         bet = 0;
-        betTotal.textContent = `Bet: ${bet}`
-        hideBtn();
-        replaceBet();
-
+        betTotal.textContent = `Bet: ${bet}`        
     }
+   
     console.log("Player Hand Should Append, PlayerScore Update")
     console.log(playerScore);
     playScoreDisplay.textContent = `PLAYER: ${playerScore}`
@@ -293,6 +249,8 @@ function hit() {
 //Stand function, essentially evaluates score and ends game.
 function stay() {
     hideBtn();
+    replaceBet();
+
     document.getElementById("hidden").src = "./cards/" + hidden + ".png";
     while (dealerScore < 17) {
         // for (let i = 0; i < 1; i++) {
@@ -320,6 +278,7 @@ function stay() {
         bank += bet;
         monies.textContent = `Bank: $${bank}`
         console.log(`You win ${bet}. Have $${bank}.`)
+ 
     
     }
     else if (playerScore == dealerScore) {
@@ -347,7 +306,8 @@ function stay() {
     monies.textContent = `Bank: $${bank}`
     bet = 0;
     betTotal.textContent = `Bet: ${bet}`
-    replaceBet();
+
+  
 }
 
 function addTen(){
@@ -381,7 +341,7 @@ function removeCard(){
     playScoreDisplay.textContent = " ";
     dealerScoreDisplay.textContent = " ";
     messageDisplay.textContent = "";
-    replaceBet();
+   
     showBtn();
 
     while(playerHand.firstChild){
@@ -392,27 +352,25 @@ function removeCard(){
     }
 }
 
-function replaceBet(){
-    betTen.classList.toggle("show")
-    betTwenty.classList.toggle("show")
-    betFifty.classList.toggle("show")
-    betHundred.classList.toggle("show")
-}
+
 
 function removeBet(){
-    betTen.classList.toggle("hide")
-   betTwenty.classList.toggle("hide")
-   betFifty.classList.toggle("hide")
-   betHundred.classList.toggle("hide")
-
+   moneyButtons.classList.add("hideButton");
 }
+
+
+function replaceBet(){
+    moneyButtons.classList.remove("hideButton");
+}
+
+
 function hideBtn(){
-    stayBtn.classList.toggle("hide")
-    hitBtn.classList.toggle("hide")
+    stayBtn.classList.add("hide")
+    hitBtn.classList.add("hide")
 }
 function showBtn(){
-    stayBtn.classList.toggle("show")
-    hitBtn.classList.toggle("show")
+    stayBtn.classList.remove("hide")
+    hitBtn.classList.remove("hide")
 }
 
 function dealHands(){
