@@ -16,9 +16,6 @@ The player attempts to beat the dealer by getting a card count as close to 21 as
 
 If your first two cards are an Ace, and a Ten or Face Card = Blackjack!
 
-Unsolved Problems: 
-Ace card isn't always evaluated correctly.
-There is no game over notice when the deck runs out of cards. 
 
 Contact at vickyphung@gmail.com. Thanks!
 
