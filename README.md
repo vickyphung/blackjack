@@ -1,4 +1,4 @@
-[# blackjackwithbear](https://blackjackwithbear.netlify.app/)
+https://blackjackwithbear.netlify.app/
 
 
 ![Blackjack Demo](https://media.giphy.com/media/rOcNCk17eF3gva0LI3/giphy.gif)
